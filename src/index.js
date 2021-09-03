@@ -1,12 +1,82 @@
-// Таймер_______________________________________________
+class CountdownTimer {
+  constructor(selector, targetDate) {
 
-function timer(targetDate) {
+    insertDom(targetDate);
+    
+      // DOM__________________________________________________
+
+      function insertDom(targetDate) {
+
+  setInterval(() => {
+    const timerDiv = document.querySelector('.timer');
+
+    timerDiv.innerHTML = '';
+
+    timerDiv.insertAdjacentHTML('afterbegin', createMarkup(targetDate));
+  }, 1000);
+  
+      }
+
+      // Разметка_____________________________________________
+
+      function createMarkup(targetDate) {
+
+  const { days, hours, mins, secs } = timer(targetDate);
+  let day = days;
+  let hour = hours;
+  let min = mins;
+  let sec = secs;
+
+  if (days.toString().length === 1) {
+    day = `0${days}`
+  };
+
+  if (hours.toString().length === 1) {
+    hour = `0${hours}`
+  };
+
+   if (mins.toString().length === 1) {
+    min = `0${mins}`
+  };
+
+   if (secs.toString().length === 1) {
+    sec = `0${secs}`
+  };
+    
+    const markup =
+        
+        `<div class="timer" id="${selector}">
+            <div class="field">
+              <span class="value" data-value="days">${day}</span>
+              <span class="label">Days</span>
+            </div>
+
+            <div class="field">
+              <span class="value" data-value="hours">${hour}</span>
+              <span class="label">Hours</span>
+            </div>
+
+            <div class="field">
+              <span class="value" data-value="mins">${min}</span>
+              <span class="label">Minutes</span>
+            </div>
+
+            <div class="field">
+              <span class="value" data-value="secs">${sec}</span>
+              <span class="label">Seconds</span>
+            </div>
+        </div>`
+    
+    return markup;
+      };
+
+      // Таймер_______________________________________________
+
+      function timer(targetDate) {
 
     const startDate = new Date();
-    console.log(startDate);
 
     const finishDate = new Date(targetDate);
-    console.log(finishDate);
 
     const time = finishDate - startDate;
     const days = Math.floor(time / (1000 * 60 * 60 * 24));
@@ -20,55 +90,12 @@ function timer(targetDate) {
         mins: mins,
         secs: secs,
     }
-    console.log(countdown);
+
     return countdown;
-}
+      }
 
-// _____________________________________________________
+  }
 
-// Разметка_____________________________________________
-
-
-function createMarkup(targetDate) {
-
-    timer(targetDate);
-    // console.log(timer(targetDate));
-
-    const { days, hours, mins, secs } = timer(targetDate);
-    
-    const markup =
-        
-        `<div class="timer" id="timer-1">
-            <div class="field">
-              <span class="value" data-value="days">${days}</span>
-              <span class="label">Days</span>
-            </div>
-
-            <div class="field">
-              <span class="value" data-value="hours">${hours}</span>
-              <span class="label">Hours</span>
-            </div>
-
-            <div class="field">
-              <span class="value" data-value="mins">${mins}</span>
-              <span class="label">Minutes</span>
-            </div>
-
-            <div class="field">
-              <span class="value" data-value="secs">${secs}</span>
-              <span class="label">Seconds</span>
-            </div>
-        </div>`
-    
-    console.log(markup);
-    return markup;
 };
 
-createMarkup('Sept 7, 2021');
-// _____________________________________________________
-
-// DOM__________________________________________________
-
-const body = document.querySelector('body');
-
-body.insertAdjacentHTML('afterbegin', createMarkup('Sept 7, 2021'));
+new CountdownTimer('#timer-1', 'Sept 7, 2021');
